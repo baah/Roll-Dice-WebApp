@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+        <title> Roll dice</title>
+        <link rel="shortcut icon" href="./fav.ico" type="image/x-icon" />
+
+            <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+	</head>
+	<body>
+        <div class = "container">
+    		<form>
+                <div class = "form-group">
+        	       <label class="text-monospace">Number of sides</label>
+                   <input type="number" class = "form-control" value="6" id = "num1"><br> 
+        		   <label class="text-monospace">Number of dice</label>
+                   <input type="number" class = "form-control" value="1" id = "num2"><br> 
+                </div>
+    		</form>
+
+    		<button class = "btn btn-success" > Roll the dice! </button>
+    		<br><br>
+
+                <div class = "outputBox">
+                    <p class="text-monospace">You rolled:</p>
+                    <ul class = "list-group">
+                    </ul>
+                </div>
+            <hr>
+                <div class = "history">
+                    <p class="text-monospace">History:</p>
+                    <ul class = "list-group">
+                    </ul>
+                </div>
+
+    		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+            <script>
+
+                // Rolls dice: given number of sides and number of dice, returns an array of integer values
+                function rollDice(sides, dice){
+                    var boxArr = [];
+                    for(var i = 0; i < dice; i++){
+                        boxArr[i] = Math.floor((Math.random() * sides) + 1);
+                    }
+                    return boxArr;
+                }
+
+                // Adds all elements to end of outputBox
+                // function prependBox(arr){
+                //     // $(".outputBox ul").empty();
+                //     for(var i = 0; i < arr.length; i++){
+                //         $(".outputBox ul").prepend("<li class = 'list-group-item'>" + arr[i] + "</li>");
+                //     }
+                // }
+
+                function prependObj(arr, sel){
+                    for(var i = 0; i < arr.length; i++){
+                        $(sel).prepend("<li class = 'list-group-item'>" + arr[i] + "</li>");
+                    }
+                }
+
+                $(document).ready(function(){
+
+                    var count = 0;
+                    var arr = [];
+                    var temp = [];
+
+                
+                	$(".outputBox").hide();
+                    $(".history").hide();
+
+                	$("button").click(function(){
+                        var sides = $("#num1").val();
+                        var dice = $("#num2").val();
+
+                        if(count === 0){
+                            arr = rollDice(sides, dice);
+                            prependObj(arr, ".outputBox ul");
+                            $(".outputBox").slideDown();
+
+                            count = count + 1;
+                            temp = arr; 
+                        }else{
+                            prependObj(temp, ".history ul");
+                            $(".history").slideDown();
+
+                            arr = rollDice(sides, dice);
+                            $(".outputBox ul").empty();
+                            prependObj(arr, ".outputBox ul");
+                            temp = arr;
+                        }
+                    })
+                  
+                });
+            </script>
+        </div>
+    </body>
+</html>
+
